@@ -30,20 +30,20 @@ commands:
   - id: restore
     exec:
       component: tools
-      workingDir: /projects/dotnet-devspaces/MyApi
+      workingDir: /projects/dotnet-devspaces/my-dotnet-app/MyApi
       commandLine: "dotnet restore"
   - id: build
     exec:
       component: tools
-      workingDir: /projects/dotnet-devspaces/MyApi
+      workingDir: /projects/dotnet-devspaces/my-dotnet-app/MyApi
       commandLine: "dotnet build"
   - id: run
     exec:
       component: tools
-      workingDir: /projects/dotnet-devspaces/MyApi
+      workingDir: /projects/dotnet-devspaces/my-dotnet-app/MyApi
       commandLine: "dotnet run"
   - id: test
     exec:
       component: tools
-      workingDir: /projects/dotnet-devspaces/MyApi.Tests
+      workingDir: /projects/dotnet-devspaces/my-dotnet-app/MyApi.Tests
       commandLine: "dotnet test"
