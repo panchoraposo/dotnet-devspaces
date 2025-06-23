@@ -1,0 +1,49 @@
+schemaVersion: 2.2.0
+metadata:
+  name: dotnet8-testcontainers
+attributes:
+  controller.devfile.io/devworkspace-config: "true"
+  controller.devfile.io/scc: "container-build"
+components:
+  - name: tools
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:8.0
+      memoryLimit: 2Gi
+      mountSources: true
+      sourceMapping: /projects
+      command:
+        - sleep
+      args:
+        - infinity
+      volumeMounts:
+        - name: docker-sock
+          path: /var/run/docker.sock
+      env:
+        - name: DOTNET_CLI_TELEMETRY_OPTOUT
+          value: "1"
+        - name: DOTNET_USE_POLLING_FILE_WATCHER
+          value: "1"
+  - name: docker-sock
+    volume:
+      ephemeral: false
+commands:
+  - id: restore
+    exec:
+      component: tools
+      workingDir: /projects/MyApi
+      commandLine: "dotnet restore"
+  - id: build
+    exec:
+      component: tools
+      workingDir: /projects/MyApi
+      commandLine: "dotnet build"
+  - id: run
+    exec:
+      component: tools
+      workingDir: /projects/MyApi
+      commandLine: "dotnet run"
+  - id: test
+    exec:
+      component: tools
+      workingDir: /projects/MyApi.Tests
+      commandLine: "dotnet test"
