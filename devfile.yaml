@@ -2,8 +2,6 @@ schemaVersion: 2.2.0
 metadata:
   name: dotnet8-testcontainers
   version: 1.0.0
-attributes:
-  gitOpsRepository: "https://github.com/tu-org/tu-repo"
 components:
   - name: tools
     container:
@@ -11,10 +9,8 @@ components:
       memoryLimit: 3Gi
       mountSources: true
       sourceMapping: /projects
-      command:
-        - sleep
-      args:
-        - infinity
+      command: ["sleep"]
+      args: ["infinity"]
       env:
         - name: DOTNET_CLI_HOME
           value: "/projects/.dotnet"
@@ -31,11 +27,18 @@ components:
       ephemeral: false
 
 commands:
-  - id: init-dotnet-cli-home
+  - id: create-dotnet-home
     exec:
       component: tools
       commandLine: mkdir -p /projects/.dotnet
       workingDir: /projects
+      group:
+        kind: build
+
+  - id: init
+    composite:
+      commands:
+        - create-dotnet-home
       group:
         kind: build
         isDefault: true
@@ -47,7 +50,6 @@ commands:
       workingDir: /projects
       group:
         kind: build
-        isDefault: false
 
   - id: run
     exec:
@@ -60,4 +62,4 @@ commands:
 
 events:
   preStart:
-    - init-dotnet-cli-home
+    - init
