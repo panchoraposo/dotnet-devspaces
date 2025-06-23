@@ -27,29 +27,15 @@ components:
       ephemeral: false
 
 commands:
-  - id: create-dotnet-home
-    exec:
-      component: tools
-      commandLine: mkdir -p /projects/.dotnet
-      workingDir: /projects
-      group:
-        kind: build
-
-  - id: init
-    composite:
-      commands:
-        - create-dotnet-home
-      group:
-        kind: build
-        isDefault: true
-
   - id: build
     exec:
       component: tools
-      commandLine: dotnet build
+      commandLine: |
+        mkdir -p /projects/.dotnet && dotnet build
       workingDir: /projects
       group:
         kind: build
+        isDefault: true
 
   - id: run
     exec:
@@ -59,7 +45,3 @@ commands:
       group:
         kind: run
         isDefault: true
-
-events:
-  preStart:
-    - init
